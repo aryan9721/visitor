@@ -1,0 +1,32 @@
+.center-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; Adjust as needed */
+  }
+  
+  .box {
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 20px;
+    width: 300px; /* Adjust width as needed */
+    text-align: center;
+  }
+  .field{
+    width: 100%;
+    padding: 8px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin: 10px;
+}
+  .blueButton{
+    align-self: center;
+    padding: 10px;
+    border: none;
+    background-color: #21becc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
+  

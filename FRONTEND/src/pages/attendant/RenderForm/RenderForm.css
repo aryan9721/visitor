@@ -1,0 +1,25 @@
+.container{
+    padding: 3%;
+    border: 1px solid;
+    border-radius: 5px;
+}
+.field{
+    width: 100%;
+    padding: 8px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+.fields{
+    margin-bottom: 10px;
+}
+.blueButton{
+    width: 200px;
+    align-self: center;
+    padding: 10px;
+    border: none;
+    background-color: #21becc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}

@@ -1,0 +1,17 @@
+.newInput{
+    margin: 10px
+}
+
+.ML{
+    margin-left: 10px;
+}
+.blueButton{
+    margin-left: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #21becc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}

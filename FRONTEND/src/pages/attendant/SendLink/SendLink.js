@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import api from '../../api'
-import './SendLink.css'
+import './SendLink.css';
+import QRCode from 'qrcode.react';
+
 const SendLink = () => {
   // Step 2: Create state variable to store the mobile number
   const [mobileNumber, setMobileNumber] = useState('');
   const [response, setResponse] = useState(null); // To store API response
   const localdata = JSON.parse(localStorage.getItem('userdata'));
+  const [url, setUrl] = useState('');
 
+  useEffect(() => {
+    setUrl(`https://visitor-clip/form/${localdata.businessId}`);
+    console.log(`https://visitor-clip/form/${localdata.businessId}`);
+    console.log(localdata);
+  }, [])
+  
   // Step 3: Create a function to handle form submission and make the API call
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +57,10 @@ const SendLink = () => {
             Submit
           </button>
         </form>
+      </div>
+      <div style={{marginLeft: 20}}>
+      <QRCode value={url} />
+
       </div>
 
       {response && (

@@ -4,6 +4,7 @@
 // icons
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
+const localdata = JSON.parse(localStorage.getItem('userdata'));
 
 const Business = {
     id: 'Business',
@@ -54,6 +55,16 @@ const Business = {
             title: 'Create Form',
             type: 'item',
             url: '/CreateForm',
+            // icon: icons.ProfileOutlined,
+            // target: true
+            breadcrumbs: false
+
+        },
+        {
+            id: 'ShowForm',
+            title: 'Show Form',
+            type: 'item',
+            url: '/form/'+localdata.userId,
             // icon: icons.ProfileOutlined,
             // target: true
             breadcrumbs: false

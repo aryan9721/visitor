@@ -19,8 +19,7 @@ route.put('/:userId', RouteSecurity.autherizeRouteForAdminUser, AdminController.
 // //delete Admin by user id
 // route.delete('/:userId', RouteSecurity.autherizeRouteForSupperAdmin, AdminController.deleteAdminByUserId)
 
-// //get Admin by email id
-// route.get('/:emailId', RouteSecurity.autherizeRouteForAdminUser, AdminController.getAdminByEmailId)
-
+//get Admin by email id
+route.get('/formCounts/:businesssId', RouteSecurity.autherizeRouteForAdminUser, AdminController.getFormCount)
 
 module.exports = route

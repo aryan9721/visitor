@@ -51,6 +51,15 @@ function approveBusiness(req, res, next){
 }
 
 
+function getFormCount(req, res, next){
+    AdminService.getFormCount(req.params.businesssId, req.user)
+        .then(result=>{
+            console.log("get form count Conroller Result : ",result)
+            res.status(result.statusCode)
+            res.send(result)
+        })
+}
+
 module.exports = {
-    registerAdmin, updateAdmin, approveBusiness
+    registerAdmin, updateAdmin, approveBusiness, getFormCount
 }

@@ -8,7 +8,8 @@ const Form = () => {
   const [formData, setFormData] = useState(null);
   const [formInfo,setFormInfo] = useState(null)
   const { id } = useParams();
-
+  const [business,setBusiness] = useState('');
+  const [formDescription,setFormDescription] = useState('');
   useEffect(() => {
     // Replace with the actual URL of your API endpoint
     const apiUrl = api+'api/businesses/form/'+id; // Replace with your API URL
@@ -19,6 +20,8 @@ const Form = () => {
         if (data.statusCode === 200 && data.data) {
           console.log(data);
           const formJson = JSON.parse(data.data.formJson);
+          data.data.businessName && setBusiness(data.data.businessName);
+          data.data.formDescription && setFormDescription(data.data.formDescription);
           setFormData(formJson);
         }
       })
@@ -28,7 +31,10 @@ const Form = () => {
   }, []);
   console.log(formData);
   return (<div>
-          {formData?<div><RenderForm fields={formData} /></div>:<div>Loading...</div>}
+          {formData?<div>
+            <h1>{business}</h1>
+            <h2>{formDescription}</h2>
+            <RenderForm fields={formData} /></div>:<div>Loading...</div>}
         </div>
   );
 };

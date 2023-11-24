@@ -20,7 +20,7 @@ const FieldsDisplay = ({ fields, onRemoveField,ontoggleRequired }) => {
         <span>Field Type: {field.fieldType}</span><br />
         <span>Minimum Length: {field.minLength}</span><br />
         <span>Maximum Length: {field.maxLength}</span><br />
-        <span>Regex: {field.regex}</span><br />
+        {/* <span>Regex: {field.regex}</span><br /> */}
         <span style={{marginRight: 10}}>Required:</span>
         {
           field.required?
@@ -36,6 +36,15 @@ const FieldsDisplay = ({ fields, onRemoveField,ontoggleRequired }) => {
 };
 
 const CreateForm = () => {
+  const [business,setBusiness] = useState('');
+  const [formDescription,setFormDescription] = useState('');
+  const handleBusinessChange = (event) => {
+    setBusiness(event.target.value);
+  };
+
+  const handleFormDescriptionChange = (event) => {
+    setFormDescription(event.target.value);
+  };
   const [fields, setFields] = useState(
     [
       {
@@ -224,7 +233,7 @@ const CreateForm = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newField, setNewField] = useState({
     fieldName: '',
-    fieldType: '',
+    fieldType: 'text',
     fieldLabel: '',
     minLength: '',
     maxLength: '',
@@ -253,9 +262,11 @@ const CreateForm = () => {
     try {
       // Make an API call to send the 'fields' object to the backend.
       const localdata = JSON.parse(localStorage.getItem('userdata'));
+      console.log(localdata);
       setFields(convertFieldNamesToLowerCase(fields));
       console.log(fields);
-      const response = await axios.put(api+'api/businesses/form', { businessId: localdata.businessId,"formJson": JSON.stringify(fields) });
+      console.log( { businessId: localdata.businessId,businessName:business, formDescription: formDescription,"formJson": JSON.stringify(fields) });
+      const response = await axios.put(api+'api/businesses/form', { businessId: localdata.businessId,businessName:localdata.businessName, formDescription: 'some description',"formJson": JSON.stringify(fields) });
       alert('Form saved');
       // Handle the response as needed. You can show a success message or perform other actions.
       console.log('API Response:', response.data);
@@ -271,17 +282,39 @@ const CreateForm = () => {
   };
 
   const handleInputChange = (e) => {
+    console.log(e.target);
     const { name, value } = e.target;
     setNewField((prevNewField) => ({
       ...prevNewField,
       [name]: value,
-      [`${name}_required`]: !prevNewField[`${name}_required`], // Toggle the required property
+      // [`${name}_required`]: !prevNewField[`${name}_required`], // Toggle the required property
+    }));
+  };
+
+  const toggle = () => {
+    setNewField(prevState => ({
+      ...prevState,
+      required: !prevState.required,
+    }));
+  };
+
+  const handleNewInputChange = (event) => {
+    const { name, value } = event.target;
+  
+    // If the field is 'values', split the comma-separated string into an array
+    const updatedValue = name === 'values' ? value.split(',').map(val => val.trim()) : value;
+  
+    setNewField(prevState => ({
+      ...prevState,
+      [name]: updatedValue,
     }));
   };
   
 
   const addNewField = () => {
+    console.log(newField);
     if (
+      
       newField.fieldName.trim() === '' ||
       newField.fieldType.trim() === '' ||
       newField.fieldLabel.trim() === ''
@@ -332,22 +365,14 @@ const CreateForm = () => {
                 value={newField.fieldType}
                 fullWidth
               /> */}
-              <label style={{marginRight: 10,marginLeft: 10}} htmlFor="fieldType">Field Type:</label>
+              <label style={{marginRight: 10,marginLeft: 10,marginBottom: 10}} htmlFor="fieldType">Field Type:</label>
               <select id="fieldType" name="fieldType" value={newField.fieldType} onChange={handleInputChange}>
                 <option value="text">Text</option>
                 <option value="radio">Radio</option>
                 <option value="dropdown">Dropdown</option>
                 <option value="date">Date</option>
               </select>
-              <TextField
-                required
-                className='newInput'
-                label="Field Name"
-                name="fieldName"
-                onChange={handleInputChange}
-                value={newField.fieldName}
-                fullWidth
-              />
+
               <TextField
               required
                 className='newInput'
@@ -355,6 +380,15 @@ const CreateForm = () => {
                 name="fieldLabel"
                 onChange={handleInputChange}
                 value={newField.fieldLabel}
+                fullWidth
+              />
+                            <TextField
+                required
+                className='newInput'
+                label="Field Name (useCamelCase) "
+                name="fieldName"
+                onChange={handleInputChange}
+                value={newField.fieldName}
                 fullWidth
               />
               <TextField
@@ -373,42 +407,47 @@ const CreateForm = () => {
                 value={newField.maxLength}
                 fullWidth
               />
-              <TextField
+              {/* <TextField
                 className='newInput'
                 label="Regex"
                 name="regex"
                 onChange={handleInputChange}
                 value={newField.regex}
                 fullWidth
-              />
+              /> */}
               <div style={{padding: '10.5px 14px 10.5px 12px'}}>
                 <label>
                   Required:
-                  <input type="checkbox" name="required" onChange={handleInputChange} checked={newField.required} />
+                  <input type="checkbox" name="required" onChange={toggle} />
                 </label>
               </div>
-              {newField.fieldType=='radio'?              
-              <TextField
-                className='newInput'
-                label="Values for Radio (comma-separated)"
-                name="values"
-                onChange={handleInputChange}
-                value={newField.values.join(', ')}
-                fullWidth
-              />:
-              <></>
-            }
-            {
-              newField.fieldType=='dropdown'?
-              <TextField
-              className='newInput'
-              label="Values for Dropdown (comma-separated)"
-              name="values"
-              onChange={handleInputChange}
-              value={newField.values.join(', ')}
-              fullWidth
-            />:<></>
-            }
+              {
+  newField.fieldType === 'radio' ?
+    <TextField
+      className='newInput'
+      label="Values for Radio (comma-separated)"
+      name="values"
+      onChange={handleNewInputChange}
+      value={Array.isArray(newField.values) ? newField.values.join(', ') : ''}
+      fullWidth
+    />
+    :
+    <></>
+}
+{
+  newField.fieldType === 'dropdown' ?
+    <TextField
+      className='newInput'
+      label="Values for Dropdown (comma-separated)"
+      name="values"
+      onChange={handleNewInputChange}
+      value={Array.isArray(newField.values) ? newField.values.join(', ') : ''}
+      fullWidth
+    />
+    :
+    <></>
+}
+
 
               <Button className='newInput' variant="contained" onClick={addNewField}>Add Field</Button>
               <Button variant="contained" className='newInput' onClick={closeModal}>Cancel</Button>
@@ -416,7 +455,24 @@ const CreateForm = () => {
           </Box>
         </Modal>
       </div>
-
+      <div>
+      <TextField
+        label="Business Name"
+        variant="outlined"
+        value={business}
+        onChange={handleBusinessChange}
+        fullWidth
+        margin="normal"
+      />
+      <TextField
+        label="Form Description"
+        variant="outlined"
+        value={formDescription}
+        onChange={handleFormDescriptionChange}
+        fullWidth
+        margin="normal"
+      />
+    </div>
       <FieldsDisplay fields={fields} onRemoveField={handleRemoveField} ontoggleRequired={toggleRequired} />
     </div>
   );

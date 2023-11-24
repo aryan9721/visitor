@@ -3,7 +3,7 @@ const UserDb = require('../database/models/userDb');
 const USER_ROLE = require('../constants/role-constant')
 const UserIdGenerator = require('../utils/user-id-generator')
 const OtpUtility = require('../utils/otp-utility')
-
+const VisitorFormDb = require('../database/models/visitorFormDb')
 async function registerAdmin(payload, user){
     try {
         
@@ -35,6 +35,16 @@ async function approveBusiness( userId, status,user){
     }
 }
 
+async function getFormCount( businesssId,user){
+    try {
+        let forms = await VisitorFormDb.find({businessId: businesssId})
+        if(forms){   
+            let formStats = {formCount: forms.length}         
+            return new ApiResponse(200, "Success", null, formStats) 
+        }else return new ApiResponse(400, "Invalid business id!", null, null)  
+    } catch (error) {
+        return new ApiResponse(500, 'Exception Updating Admin!.', null, error)
+    }
+}
 
-
-module.exports={registerAdmin, updateAdmin, approveBusiness}
+module.exports={registerAdmin, updateAdmin, approveBusiness, getFormCount}

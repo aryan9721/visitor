@@ -60,18 +60,15 @@ const Business = {
             breadcrumbs: false
 
         },
-        {
+        localdata && localdata.userId && {
             id: 'ShowForm',
             title: 'Show Form',
             type: 'item',
-            url: '/form/'+localdata.userId,
-            // icon: icons.ProfileOutlined,
-            // target: true
+            url: '/form/' + localdata.businessId,
             breadcrumbs: false
-
         },
 
-    ]
+    ].filter(Boolean)
 };
 
 export default Business;

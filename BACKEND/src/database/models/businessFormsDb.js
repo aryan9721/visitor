@@ -3,6 +3,8 @@ const Schema = mongoose.Schema
 
 const businessFormDBSchema = new Schema({
     businessId : {type:String, required: true},
+    businessName : {type:String, required: true},
+    formDescription : {type:String, required: true},    
     formJson : {type:String, required: true}
 },{timestamps: true})
 

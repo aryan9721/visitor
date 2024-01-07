@@ -266,7 +266,7 @@ const CreateForm = () => {
       setFields(convertFieldNamesToLowerCase(fields));
       console.log(fields);
       console.log( { businessId: localdata.businessId,businessName:business, formDescription: formDescription,"formJson": JSON.stringify(fields) });
-      const response = await axios.put(api+'api/businesses/form', { businessId: localdata.businessId,businessName:localdata.businessName, formDescription: 'some description',"formJson": JSON.stringify(fields) });
+      const response = await axios.put(api+'api/businesses/form',{ businessId: localdata.businessId,businessName:business, formDescription: formDescription,"formJson": JSON.stringify(fields) });
       alert('Form saved');
       // Handle the response as needed. You can show a success message or perform other actions.
       console.log('API Response:', response.data);

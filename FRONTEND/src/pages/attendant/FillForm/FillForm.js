@@ -6,7 +6,8 @@ const FillForm = () => {
   const localdata = JSON.parse(localStorage.getItem('userdata'));
   const [formData, setFormData] = useState(null);
   const [formInfo,setFormInfo] = useState(null)
-
+  const [businessName,setBusinessName] = useState('');
+  const [formDescription,setFormDescription] = useState('');
   useEffect(() => {
     // Replace with the actual URL of your API endpoint
     const apiUrl = api+'api/businesses/form/'+localdata.businessId; // Replace with your API URL
@@ -17,6 +18,8 @@ const FillForm = () => {
         if (data.statusCode === 200 && data.data) {
           console.log(data);
           const formJson = JSON.parse(data.data.formJson);
+          setBusinessName(data.data.businessName);
+          setFormDescription(data.data.formDescription);
           setFormData(formJson);
         }
       })
@@ -26,6 +29,8 @@ const FillForm = () => {
   }, []);
   console.log(formData);
   return (<div>
+          {businessName?<h1>{businessName}</h1>:''}
+          {formDescription?<h2>{formDescription}</h2>:''}
           {formData?<div><RenderForm fields={formData} /></div>:<div>Loading...</div>}
         </div>
   );

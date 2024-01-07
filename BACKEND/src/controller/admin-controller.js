@@ -50,9 +50,8 @@ function approveBusiness(req, res, next){
         })
 }
 
-
 function getFormCount(req, res, next){
-    AdminService.getFormCount(req.params.businesssId, req.user)
+    AdminService.getFormCount(req.params.businesssId, req.query.fromDate, req.query.toDate, req.user)
         .then(result=>{
             console.log("get form count Conroller Result : ",result)
             res.status(result.statusCode)

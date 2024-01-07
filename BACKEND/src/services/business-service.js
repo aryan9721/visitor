@@ -23,7 +23,7 @@ async function registerBusiness(business, user){
         mobileNo: business.businessContactNo ,
         name: business.businessName,
         role: USER_ROLE.BUSINESS_OWNER,
-        userId: UserIdGenerator.getNextUserId(),
+        userId: UserIdGenerator.getNextBusinessId(),
         isActive: false,
         otpDetails: OtpUtility.generateOTP()
     })
@@ -47,8 +47,7 @@ async function registerBusiness(business, user){
  * @param {any} user 
  */
 async function getBusinessList(page, limit, user){
-    console.log(page, limit)
-
+    
     const pageOptions = {
         page: parseInt(page, 10) || 0,
         limit: parseInt(limit, 10) || 10
@@ -58,6 +57,8 @@ async function getBusinessList(page, limit, user){
         result = await BusinessDb.find()
         .skip(pageOptions.page * pageOptions.limit)
         .limit(pageOptions.limit)
+
+        
     } catch (error) {
         return new ApiResponse(500, 'Exception While Fetching Business List!.', null, error.message)
     }
@@ -95,8 +96,13 @@ async function putform(payload, user){
         let businessDb = await BusinessDb.findOne({businessId: payload.businessId})
         if(businessDb){
             formDb = await BusinessFormsDB.findOne({businessId: payload.businessId})
+            console.log(payload);
             if(formDb)
+            {
                 formDb.formJson = payload.formJson
+                formDb.businessName = payload.businessName
+                formDb.formDescription = payload.formDescription
+            }
             else
                 formDb = new BusinessFormsDB(payload)
 
